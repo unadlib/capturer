@@ -1,0 +1,30 @@
+{
+  "name": "capturer",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Log Tracking",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unadlib/capturer.git"
+  },
+  "keywords": [
+    "log",
+    "tracking"
+  ],
+  "workspaces": [
+    "packages/*"
+  ],
+  "author": "unadlib",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/unadlib/capturer/issues"
+  },
+  "homepage": "https://github.com/unadlib/capturer#readme",
+  "devDependencies": {
+    "lerna": "^2.11.0"
+  }
+}
