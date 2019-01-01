@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 function interceptData() {
     var xhrOverrideScript = document.createElement('script');
     xhrOverrideScript.type = 'text/javascript';
@@ -41,6 +43,6 @@ requestIdleCallback(checkForDOM);
 
 window.addEventListener('message', (event) => {
     if (event.source != window) return;
-    chrome.runtime.sendMessage(event.data);
+    browser.runtime.sendMessage(event.data);
 }, false);
 
