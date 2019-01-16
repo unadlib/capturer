@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 function generateSpy(name: string): string {
     return `
     var ${name} = console.${name};
@@ -56,7 +58,7 @@ requestIdleCallback(checkForDOM);
 
 window.addEventListener('message', (event) => {
     if (event.source != window) return;
-    chrome.runtime.sendMessage(event.data);
+    browser.runtime.sendMessage(event.data);
 }, false);
 
 window.addEventListener('keydown', ({
