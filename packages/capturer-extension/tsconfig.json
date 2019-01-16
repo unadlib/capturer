@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "moduleResolution": "node",
+        "noEmit": true,
+        "strict": true,
+        "allowJs": true,
+        "types" : [
+            "chrome"
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}

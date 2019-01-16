@@ -47,11 +47,17 @@ const options = {
         test: /\.html$/,
         loader: 'html-loader',
         exclude: /node_modules/
+      },
+      {
+        test: /\.(j|t)s$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/
       }
     ]
   },
   resolve: {
-    alias
+    alias,
+    extensions: ['.ts', '.js', '.json']
   },
   plugins: [
     new CleanWebpackPlugin(['build']),
