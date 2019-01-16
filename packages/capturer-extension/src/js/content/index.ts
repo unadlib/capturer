@@ -1,4 +1,4 @@
-import browser from 'webextension-polyfill';
+import { browser } from 'webextension-polyfill-ts';
 
 function generateSpy(name: string): string {
     return `

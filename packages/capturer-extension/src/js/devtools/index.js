@@ -1,4 +1,4 @@
-import browser from 'webextension-polyfill';
+import { browser } from 'webextension-polyfill-ts';
 
 browser.devtools.panels.create("Capturer", null, 'panel.html');
 

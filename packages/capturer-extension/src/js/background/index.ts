@@ -1,4 +1,4 @@
-import browser from 'webextension-polyfill';
+import { browser } from 'webextension-polyfill-ts';
 import '../../img/icon-34.png';
 import '../../img/icon-128.png';
 
@@ -10,7 +10,7 @@ browser.webRequest.onCompleted.addListener(
         });
     },
     { urls: ["<all_urls>"] },
-    ["responseHeaders", "extraHeaders"]
+    ["responseHeaders"]
 );
 
 browser.runtime.onMessage.addListener((detail, sender, sendResponse) => {

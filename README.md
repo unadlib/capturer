@@ -1,2 +1,2 @@
 # capturer
-Log Tracking
+Log tracking for debugger

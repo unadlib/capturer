@@ -6,7 +6,8 @@
         "strict": true,
         "allowJs": true,
         "types" : [
-            "chrome"
+            "chrome",
+            "webextension-polyfill-ts"
         ]
     },
     "exclude": [

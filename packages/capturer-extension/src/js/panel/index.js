@@ -1,4 +1,4 @@
-import browser from 'webextension-polyfill';
+import { browser } from 'webextension-polyfill-ts';
 
 browser.devtools.network.onRequestFinished.addListener(request => {
   request.getContent(body => {
