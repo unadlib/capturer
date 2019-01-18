@@ -7,7 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const env = require('./env');
 
-const pages = ['popup', 'options', 'background', 'devtools', 'panel'];
+const pages = ['popup', 'options', 'devtools', 'panel'];
 const alias = {};
 const secretsPath = path.join(__dirname, (`secrets.${env.NODE_ENV}.js`));
 const fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
@@ -16,13 +16,14 @@ if (fileSystem.existsSync(secretsPath)) {
   alias['secrets'] = secretsPath;
 }
 
-const getEntry = name => path.join(__dirname, '../src/js', name);
+const getEntry = name => path.join(__dirname, '../src/containers', name);
 
 const options = {
   entry: pages.reduce((entries, page) => (
     Object.assign(entries, {[page]: getEntry(page)})
   ), {
     content: getEntry('content'),
+    background: getEntry('background'),
   }),
   performance: {
     hints: false,
@@ -51,7 +52,13 @@ const options = {
       {
         test: /\.(j|t)s$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        query: {
+          presets: [
+            '@babel/preset-env',
+            '@babel/preset-typescript'
+          ]
+        }
       }
     ]
   },
