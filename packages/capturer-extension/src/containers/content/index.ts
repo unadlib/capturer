@@ -1,4 +1,3 @@
-import { browser } from 'webextension-polyfill-ts';
 import RequestProxy from 'capturer/modules/RequestProxy';
 import ConsoleProxy from 'capturer/modules/ConsoleProxy';
 import ErrorProxy from 'capturer/modules/ErrorProxy';
@@ -7,6 +6,7 @@ import Transponder from 'capturer/modules/Transponder';
 import createScript from 'capturer/lib/createScript';
 import InjectIdle from 'capturer/lib/injectIdle';
 import MessageSender from 'capturer/modules/MessageSender';
+import messageTypes from '../../enums/messageTypes';
 
 const requestProxy = new RequestProxy().getProxy();
 const consoleProxy = new ConsoleProxy().getProxy();
@@ -18,17 +18,36 @@ const dom = createScript([
 ]);
 new InjectIdle({ dom });
 
-const send = new MessageSender({
-  controller: new ControlKey({
-    running: true,
-    start() {
-      console.log('start');
-    },
-    end() {
-      console.log('end');
-    }
-  }),
-  send: browser.runtime.sendMessage
-}).getSender();
+let controller: ControlKey;
 
-new Transponder({ send });
+chrome.runtime.sendMessage({type: messageTypes.RunningStatus}, (response) => {
+  controller = new ControlKey({
+    running: response.running,
+    start(callback) {
+      chrome.runtime.sendMessage({ type: messageTypes.Start }, callback);
+    },
+    end(callback) {
+      chrome.runtime.sendMessage({ type: messageTypes.End }, callback);
+    }
+  });
+  const send = new MessageSender({
+    send: (playload) => chrome.runtime.sendMessage({ type: messageTypes.Log, playload }),
+    controller,
+  }).getSender();
+
+  new Transponder({ send });
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (typeof message !== 'object') return;
+  switch (message.type) {
+    case messageTypes.PopupPageChangeStart:
+      controller.start();
+      break;
+    case messageTypes.PopupPageChangeEnd:
+      controller.end();
+      break;
+    default:
+      return;  
+  }
+});

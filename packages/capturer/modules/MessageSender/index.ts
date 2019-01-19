@@ -1,7 +1,7 @@
 import { send, data } from '../../lib/sender';
 
 interface controller {
-  readonly running: boolean;
+  readonly running: boolean|undefined;
 }
 
 interface MessageSenderOptions {
