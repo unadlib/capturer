@@ -7,7 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const env = require('./env');
 
-const pages = ['popup', 'options', 'devtools', 'panel'];
+const pages = ['popup', 'options', 'devtools', 'panel', 'background'];
 const alias = {};
 const secretsPath = path.join(__dirname, (`secrets.${env.NODE_ENV}.js`));
 const fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
@@ -23,7 +23,6 @@ const options = {
     Object.assign(entries, {[page]: getEntry(page)})
   ), {
     content: getEntry('content'),
-    background: getEntry('background'),
   }),
   performance: {
     hints: false,

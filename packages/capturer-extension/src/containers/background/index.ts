@@ -1,10 +1,18 @@
 import RunningTab from 'capturer/modules/RunningTab';
+import Logger from 'capturer/modules/Logger';
 import messageTypes from '../../enums/messageTypes';
 import '../../img/icon-34.png';
 import '../../img/icon-128.png';
 
 // TODO use webextension-polyfill and resolve types file
+// TODO GC for logger big data in memory.
+let logger: Logger;
 const start = () => {
+  logger = new Logger({
+    transports: [
+      console.log
+    ]
+  });
   chrome.browserAction.setBadgeText({ text: ' ' });
   chrome.browserAction.setBadgeBackgroundColor({ color: '#00AA00' });
   chrome.runtime.sendMessage({ type: messageTypes.PopupPageStart });
@@ -12,6 +20,16 @@ const start = () => {
 const end = () => {
   chrome.browserAction.setBadgeText({ text: '' });
   chrome.runtime.sendMessage({ type: messageTypes.PopupPageEnd });
+  const blob = new Blob([JSON.stringify(logger.data, null, 2)], {type: "text/plain"});
+  const reader = new FileReader();
+  reader.readAsDataURL(blob);
+  reader.onloadend = function() {
+    if(typeof reader.result !== 'string') return;
+    chrome.downloads.download({
+      url: reader.result,
+      filename: 'data.json',
+    });
+  }
 };
 
 const runningTab = new RunningTab({
@@ -22,7 +40,7 @@ const runningTab = new RunningTab({
 chrome.webRequest.onCompleted.addListener(
   data => {
     if (runningTab.id === data.tabId) {
-      console.log({
+      logger.add({
         type: 'backgroud',
         data
       });
@@ -37,7 +55,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (typeof message !== 'object') return;
   switch (message.type) {
     case messageTypes.Log:
-      console.log(message.playload);
+      logger.add(message.playload);
       break;
     case messageTypes.PopupPageChangeStatus:
       if (runningTab.id) {

@@ -19,13 +19,13 @@ export default class RequestProxy {
     var send = XHR.send;
     var open = XHR.open;
     XHR.open = function(method, url) {
-      var data = { data: { method: this.method, url: this.url }, type: 'request' };
+      var data = { type: 'request', data: { method: this.method, url: this.url } };
       ${this._transport()}
       return open.apply(this, arguments);
     }
     XHR.send = function() {
         function callback() {
-          var data = { data: { response: this.response, url: this.responseURL }, type: 'response' };
+          var data = { type: 'response', data: { response: this.response, url: this.responseURL } };
           ${this._transport()}
           this.removeEventListener('load', callback);
         };

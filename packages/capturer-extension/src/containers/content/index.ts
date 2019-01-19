@@ -8,6 +8,7 @@ import InjectIdle from 'capturer/lib/injectIdle';
 import MessageSender from 'capturer/modules/MessageSender';
 import messageTypes from '../../enums/messageTypes';
 
+// TODO distinguish multi-iframe.
 const requestProxy = new RequestProxy().getProxy();
 const consoleProxy = new ConsoleProxy().getProxy();
 const errorProxy = new ErrorProxy().getProxy();
