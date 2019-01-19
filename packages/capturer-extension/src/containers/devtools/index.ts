@@ -1,11 +1,9 @@
-import { browser } from 'webextension-polyfill-ts';
+chrome.devtools.panels.create("Capturer", null, 'panel.html');
 
-browser.devtools.panels.create("Capturer", null, 'panel.html');
-
-browser.devtools.network.onRequestFinished.addListener(request => {
+chrome.devtools.network.onRequestFinished.addListener(request => {
     request.getContent(body => {
       if (request.request && request.request.url) {
-        // browser.runtime.sendMessage({
+        // chrome.runtime.sendMessage({
         //   url: request.request.url,
         //   response: body,
         // });

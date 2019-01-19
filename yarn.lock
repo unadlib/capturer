@@ -6310,18 +6310,6 @@ wcwidth@^1.0.0:
   dependencies:
     defaults "^1.0.3"
 
-webextension-polyfill-ts@^0.8.9:
-  version "0.8.9"
-  resolved "https://registry.yarnpkg.com/webextension-polyfill-ts/-/webextension-polyfill-ts-0.8.9.tgz#2bb62c31602d2bba7a66ca296fb36ab3a8fe61d5"
-  integrity sha512-RaNHDe+cCJb5DlJuiwekXp6GXG4tSZ3WAy0s5/B3BqwgXTHVG46x+Y4QKF8wIHdvW+lDEyzRrZyGP9TlCfmHIA==
-  dependencies:
-    webextension-polyfill "^0.3.0"
-
-webextension-polyfill@^0.3.0:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/webextension-polyfill/-/webextension-polyfill-0.3.1.tgz#fab2aed917a713a5d8221e41febad81c5d0b080f"
-  integrity sha512-ISB42vlgMyM7xE1u6pREeCqmmXjLsYu/nqAR8Dl/gIAnylb+KpRpvKbVkUYNFePhhXn0Obkkc3jasOII9ztUtg==
-
 webpack-dev-middleware@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-3.4.0.tgz#1132fecc9026fd90f0ecedac5cbff75d1fb45890"

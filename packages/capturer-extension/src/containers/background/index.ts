@@ -30,6 +30,11 @@ const end = () => {
       filename: 'data.json',
     });
   }
+  logger = new Logger({
+    transports: [
+      console.log
+    ]
+  });
 };
 
 const runningTab = new RunningTab({
