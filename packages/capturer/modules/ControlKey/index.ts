@@ -4,25 +4,27 @@ type callback = (() => void) | undefined;
 interface ControlKeyOptions {
   start?: callback,
   end?: callback,
+  running?: boolean, 
 }
 
 export default class ControlKey {
   private _start: callback;
   private _end: callback;
-  private _isRuning: boolean;
+  private _running: boolean;
 
   constructor({
     start,
-    end
+    end,
+    running = false,
   }: ControlKeyOptions = {}) {
-    this._isRuning = false;
+    this._running = running;
     this._start = start;
     this._end = end;
     this._addKeyListener();
   }
 
-  public get isRuning() {
-    return this._isRuning;
+  public get running() {
+    return this._running;
   }
 
   private _addKeyListener() {
@@ -38,11 +40,11 @@ export default class ControlKey {
       const isStart = keyCode === 83 && shiftKey && ctrlKey && altKey;
       const isEnd = keyCode === 69 && shiftKey && ctrlKey && altKey;
       if (isStart && typeof this._start === 'function') {
-        this._isRuning = true;
+        this._running = true;
         this._start();
       }
       if (isEnd && typeof this._end === 'function') {
-        this._isRuning = false;
+        this._running = false;
         this._end();
       }
     });
