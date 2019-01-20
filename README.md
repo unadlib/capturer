@@ -1,5 +1,5 @@
 # capturer
-Log tracking for debugger
+Log tracker for debugging
 
 ### TODO
 
