@@ -1,40 +1,24 @@
 import RunningTab from 'capturer/modules/RunningTab';
 import Logger from 'capturer/modules/Logger';
 import messageTypes from '../../enums/messageTypes';
+import { changeBadgeColor, changeBadgeStatus } from '../../lib/changeBadge';
+import download from '../../lib/download';
 import '../../img/icon-34.png';
 import '../../img/icon-128.png';
 
 // TODO use webextension-polyfill and resolve types file
 // TODO GC for logger big data in memory.
-let logger: Logger;
-const start = () => {
-  logger = new Logger({
-    transports: [
-      console.log
-    ]
-  });
-  chrome.browserAction.setBadgeText({ text: ' ' });
-  chrome.browserAction.setBadgeBackgroundColor({ color: '#00AA00' });
+const transports = [console.log];
+let logger = new Logger({ transports });
+const start = () => {  
+  changeBadgeStatus({ enable: true });
   chrome.runtime.sendMessage({ type: messageTypes.PopupPageStart });
 };
 const end = () => {
-  chrome.browserAction.setBadgeText({ text: '' });
+  changeBadgeStatus({ enable: false });
   chrome.runtime.sendMessage({ type: messageTypes.PopupPageEnd });
-  const blob = new Blob([JSON.stringify(logger.data, null, 2)], {type: "text/plain"});
-  const reader = new FileReader();
-  reader.readAsDataURL(blob);
-  reader.onloadend = function() {
-    if(typeof reader.result !== 'string') return;
-    chrome.downloads.download({
-      url: reader.result,
-      filename: 'data.json',
-    });
-  }
-  logger = new Logger({
-    transports: [
-      console.log
-    ]
-  });
+  download({ data: logger.data });
+  logger = new Logger({ transports });
 };
 
 const runningTab = new RunningTab({
@@ -60,6 +44,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (typeof message !== 'object') return;
   switch (message.type) {
     case messageTypes.Log:
+      // TODO use `html2canvas` lib for inVisible running page screenshot.
+      // TODO support multi-activeTab.
+      if (sender && sender.tab) {
+        const windowId = sender.tab.windowId;
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+          if (tabs.length === 0 || !tabs[0].id || runningTab.id !== tabs[0].id) return;
+          chrome.tabs.captureVisibleTab(windowId, {format : 'png', quality : 50}, (screenshot) => {
+            logger.add({
+              type: 'screenshot',
+              data: {
+                screenshot
+              }
+            });
+          });
+        });
+      }
       logger.add(message.playload);
       break;
     case messageTypes.PopupPageChangeStatus:
@@ -102,9 +102,14 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 });
 
 chrome.tabs.onActiveChanged.addListener((tabId) => {
-  const color = runningTab.id === tabId ? '#00AA00' : '#9C9C9C';
-  chrome.browserAction.setBadgeBackgroundColor({ color });
+  const enable = runningTab.id === tabId;
+  changeBadgeColor({ enable });
 });
 
-
-
+chrome.windows.onFocusChanged.addListener(() => {
+  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+    if (tabs.length === 0 || !tabs[0].id) return;
+    const enable = runningTab.id === tabs[0].id;
+    changeBadgeColor({ enable });
+  });
+});

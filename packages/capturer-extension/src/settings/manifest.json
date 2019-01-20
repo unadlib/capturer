@@ -18,7 +18,9 @@
     "tabs",
     "webRequest",
     "webRequestBlocking",
-    "*://*/"
+    "*://*/",
+    "activeTab",
+    "<all_urls>"
   ],
   "content_scripts": [{
       "matches": ["*://*/*"],
