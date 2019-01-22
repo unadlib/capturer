@@ -3,6 +3,8 @@ Log tracker for debugging
 
 ### TODO
 
+- [x] collect mouse/keyboard action info
+- [ ] collect pages info
 - [ ] screenshot for invsible running page
 - [ ] screenshot for multiple active tab
 - [ ] control key shortcuts customizable

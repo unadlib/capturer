@@ -3,6 +3,8 @@ import ConsoleProxy from 'capturer/modules/ConsoleProxy';
 import ErrorProxy from 'capturer/modules/ErrorProxy';
 import ControlKey from 'capturer/modules/ControlKey';
 import Transponder from 'capturer/modules/Transponder';
+import MouseHandler from 'capturer/modules/MouseHandler';
+import KeyboardHandler from 'capturer/modules/KeyboardHandler';
 import createScript from 'capturer/lib/createScript';
 import InjectIdle from 'capturer/lib/injectIdle';
 import MessageSender from 'capturer/modules/MessageSender';
@@ -35,7 +37,8 @@ chrome.runtime.sendMessage({type: messageTypes.RunningStatus}, (response) => {
     send: (playload) => chrome.runtime.sendMessage({ type: messageTypes.Log, playload }),
     controller,
   }).getSender();
-
+  new MouseHandler({ send });
+  new KeyboardHandler({ send });
   new Transponder({ send });
 });
 
