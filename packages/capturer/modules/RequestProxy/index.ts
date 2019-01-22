@@ -3,7 +3,7 @@ import { defaultTransport, transport } from '../../lib/transport';
 interface RequestProxyOptions {
   transport?(): string,
 }
-
+// TODO proxy native fetch BOM's API
 export default class RequestProxy {
   private _transport: transport;
 
