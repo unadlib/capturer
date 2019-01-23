@@ -16,3 +16,4 @@ Log tracker for debugging
 - [ ] distinguish multi-iframe
 - [ ] log data clip tools
 - [ ] custom log tools for business logic debugging
+- [ ] extension init load proxy logic for content page
